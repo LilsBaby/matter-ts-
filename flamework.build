@@ -1,0 +1,31 @@
+{
+	"version": 1,
+	"flameworkVersion": "1.2.3",
+	"identifiers": {
+		"tree-chopping:out/server/services/stuff@StuffService": "server/services/stuff@StuffService",
+		"tree-chopping:out/server/services/stuff@PlayerService": "server/services/stuff@PlayerService",
+		"tree-chopping:out/server/services/DevProducts@DevProducts": "server/services/DevProducts@DevProducts",
+		"tree-chopping:out/server/services/DevProducts/init@DevProducts": "server/services/DevProducts/init@DevProducts",
+		"tree-chopping:out/server/services/Player/init@Player": "server/services/Player/init@Player",
+		"tree-chopping:out/shared/libs/skill@Skill": "shared/libs/skill@Skill",
+		"tree-chopping:out/shared/libs/element@Element": "shared/libs/element@Element",
+		"tree-chopping:out/server/services/Guild/Join@GuildJoinService": "server/services/Guild/Join@GuildJoinService",
+		"tree-chopping:out/server/services/Guild/init@GuildService": "server/services/Guild/init@GuildService",
+		"tree-chopping:out/server/services/Player/init@PlayerService": "server/services/Player/init@PlayerService",
+		"tree-chopping:out/server/services/Player/Save@PlayerSavingService": "server/services/Player/Save@PlayerSavingService",
+		"tree-chopping:out/server/services/Lightning@LightningService": "server/services/Lightning@LightningService",
+		"tree-chopping:out/server/services/Lightning@onTimerChanged": "server/services/Lightning@onTimerChanged",
+		"tree-chopping:out/server/services/Player/Combat@CombatService": "server/services/Player/Combat@CombatService",
+		"tree-chopping:out/server/services/Lighting@LightingService": "server/services/Lighting@LightingService",
+		"tree-chopping:out/server/services/Lighting@onTimerChanged": "server/services/Lighting@onTimerChanged",
+		"tree-chopping:out/server/services/Environment@EnvironmentService": "server/services/Environment@EnvironmentService",
+		"tree-chopping:out/server/services/Environment@onTimerChanged": "server/services/Environment@onTimerChanged",
+		"tree-chopping:out/client/controllers/Camera@CameraController": "client/controllers/Camera@CameraController",
+		"tree-chopping:out/server/services/environment@EnvironmentService": "server/services/environment@EnvironmentService",
+		"tree-chopping:out/server/services/developer/init@DevProducts": "server/services/developer/init@DevProducts",
+		"tree-chopping:out/server/services/player/Save@PlayerSavingService": "server/services/player/Save@PlayerSavingService",
+		"tree-chopping:out/server/services/player/init@PlayerService": "server/services/player/init@PlayerService",
+		"tree-chopping:out/server/services/environment@onTimerChanged": "server/services/environment@onTimerChanged"
+	},
+	"metadata": {}
+}
