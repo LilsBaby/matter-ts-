@@ -1,7 +1,7 @@
 import { AnyEntity, useEvent, useThrottle, World } from "@rbxts/matter";
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { Goblin } from "shared/components/enemy/goblin";
-import { Rig, Transform } from "shared/components/entity";
+import { Path, Rig, Transform } from "shared/components/entity";
 import PID from "shared/packages/pid";
 import Tree from "shared/packages/tree";
 import { GameEvent } from "types/enums/matter";
@@ -30,6 +30,7 @@ async function GenerateRandomPosition(): Promise<Vector3> {
 
 	const x = random.NextNumber(MIN_X, MAX_X);
 	const y = random.NextNumber(MIN_Y, MAX_Y);
+	warn(x, y);
 
 	const position = new Vector3(x, box.GetPivot().Position.Y + box.Size.div(2).Y, y);
 	return position;
@@ -44,8 +45,9 @@ async function GenerateRandomPosition(): Promise<Vector3> {
 const GoblinSpawnSystem: GameSystem = async (world: World) => {
 	const goblins = new Map<number, AnyEntity>();
 
-	if (useThrottle(random.NextInteger(5, 10))) {
+	if (useThrottle(random.NextInteger(45, 100))) {
 		const position = await GenerateRandomPosition();
+		warn(position);
 		const direction = new Vector3(0, -1, 0);
 
 		const cast = Workspace.Raycast(position, direction.mul(100), RayParams);
@@ -54,16 +56,19 @@ const GoblinSpawnSystem: GameSystem = async (world: World) => {
 		if (cast === undefined) {
 			finalPos = CFrame.lookAlong(position, position.add(direction.mul(100))) as CFrame;
 		} else {
-			finalPos = new CFrame(cast.Instance.Position);
-		}
-		if (finalPos === undefined) {
-			return;
+			finalPos = new CFrame(cast.Position);
 		}
 
-		const transform = Transform({
-			cframe: new CFrame(position).Lerp(finalPos, 0.9),
-		});
-		const id = world.spawn(Goblin(), transform);
+		const id = world.spawn(
+			Goblin(),
+			Transform({ cframe: finalPos }),
+			Path({
+				destionation: (Tree.Find(Workspace, "assets/towers/base") as Model).GetPivot().Position,
+				reached: () => {
+					world.despawn(id)
+				},
+			}),
+		);
 
 		goblins.set(goblins.size() + 1, id);
 	}

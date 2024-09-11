@@ -64,6 +64,11 @@ export default class EnvironmentService implements OnStart, OnInit {
 	 * @returns
 	 */
 	private async onTimerChanged(time: number): Promise<void> {
+		if (!typeIs(time, "number") || time === undefined) {
+			return
+		}
+
+
 		const [hour, minute] = await this.deconstructTime(tostring(time));
 		const period = this.getPeriod(tonumber(hour as string) as number);
 

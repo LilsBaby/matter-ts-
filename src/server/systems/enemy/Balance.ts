@@ -7,7 +7,8 @@ import Tree from "shared/packages/tree";
 import { GameEvent } from "types/enums/matter";
 import { GameSystem } from "types/matter";
 
-const controller = new PID(-10000, 10000, 1000, 0, 100000);
+/**
+ * const controller = new PID(-10000, 10000, 1000, 0, 100000);
 controller.Debug("NPCBalance", Workspace);
 
 const GoblinBalanaceSystem: GameSystem = (world: World) => {
@@ -33,3 +34,5 @@ export = {
 	// Stepped
 	event: GameEvent.Physics,
 };
+ */
+
