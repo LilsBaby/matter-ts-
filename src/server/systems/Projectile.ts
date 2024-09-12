@@ -94,7 +94,7 @@ function LengthChanged(
 		projectile.SetAttribute("Visible", true);
 	}
 
-	projectile.CFrame = CFrame.lookAt(lastPoint.add(dir.mul(displacement)), lastPoint);
+	projectile.PivotTo(CFrame.lookAt(lastPoint.add(dir.mul(displacement)), lastPoint));
 }
 
 async function Fire(caster: Caster, behavior: FastCastBehavior, model: Model) {
