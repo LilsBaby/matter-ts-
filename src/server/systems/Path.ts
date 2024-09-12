@@ -104,23 +104,9 @@ const PathSystem: GameSystem = async (world: World, state) => {
 			initiatePath(path, destination);
 		}
 
-		janitor.addConnection(
-			path.WaypointReached.Connect(() => {
-				initiatePath(path, destination);
-			}),
-		);
-
-		janitor.addConnection(
-			path.Blocked.Connect(() => {
-				initiatePath(path, destination);
-			}),
-		);
-
-		janitor.addConnection(
-			path.Error.Connect(() => {
-				initiatePath(path, destination);
-			}),
-		);
+		janitor.addConnection(path.WaypointReached.Connect(() => initiatePath(path, destination)));
+		janitor.addConnection(path.Blocked.Connect(() => initiatePath(path, destination)));
+		janitor.addConnection(path.Error.Connect(() => initiatePath(path, destination)));
 
 		janitor.addConnection(
 			path.Reached.Connect(() => {
