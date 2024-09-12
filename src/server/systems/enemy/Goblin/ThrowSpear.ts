@@ -11,18 +11,25 @@ function canSeeTower() {}
 
 const random = new Random();
 const GoblinThrowSystem: GameSystem = (world: World, state) => {
-	for (const [id, goblin, model, transform, trajectory] of world.query(Goblin, Rig, Transform, Trajectory)) {
-		const modifier = trajectory.patch({
-			duration: trajectory.duration - useDeltaTime(),
-			isShooting: true,
-		});
-
-		if (modifier.duration <= 0) {
-			world.remove(id, Trajectory);
-		} else {
-			world.insert(id, modifier);
+	if (useThrottle(random.NextInteger(3, 6))) {
+		warn('print between 10 an 15 seoconds')
+		for (const [id, goblin, model, transform, trajectory] of world.query(Goblin, Rig, Transform, Trajectory)) {
+			const modifier = trajectory.patch({
+				duration: trajectory.duration - useDeltaTime(),
+				isShooting: true,
+			});
+			warn(modifier.duration)
+	
+			if (modifier.duration <= 0) {
+				warn('stopped')
+				world.remove(id, Trajectory);
+			} else {
+				warn("shooting")
+				world.insert(id, modifier);
+			}
 		}
 	}
+	
 };
 
 export = {

@@ -2,7 +2,7 @@ import { getComponentFromSpecifier } from "@flamework/components/out/utility";
 import { Janitor } from "@rbxts/better-janitor";
 import FastCast, { ActiveCast, Caster, FastCastBehavior } from "@rbxts/fastcast";
 import Log from "@rbxts/log";
-import { useThrottle, World } from "@rbxts/matter";
+import { useDeltaTime, useThrottle, World } from "@rbxts/matter";
 import worldInspect from "@rbxts/matter/lib/debugger/widgets/worldInspect";
 import { Players, TweenService, Workspace } from "@rbxts/services";
 import { Rig, Transform } from "shared/components/entity";
@@ -12,10 +12,10 @@ import { GameEvent } from "types/enums/matter";
 import { GameSystem } from "types/matter";
 
 const projectile = new Instance("Part");
-projectile.BrickColor = BrickColor.White();
-projectile.Anchored = false;
+projectile.BrickColor = BrickColor.Black();
+projectile.Anchored = true;
 projectile.CanCollide = false;
-projectile.Size = new Vector3(2, 2, 2);
+projectile.Size = new Vector3(6, 6, 6);
 projectile.Material = Enum.Material.Metal;
 projectile.Shape = Enum.PartType.Ball;
 const RANDOM = new Random();
@@ -146,7 +146,7 @@ const TrajectorySystem: GameSystem = async (world: World) => {
 			Trajectory({
 				duration: 3,
 				projectile,
-				acceleration: Vector3.yAxis.mul(Workspace.Gravity / 4),
+				acceleration: Vector3.yAxis.mul(Workspace.Gravity / 2),
 				distance: 200,
 				isShooting: false,
 				speed: 250,
