@@ -26,13 +26,13 @@ export default class EnvironmentService implements OnStart, OnInit {
 	 */
 	private readonly duration = 60;
 	private readonly length = 24;
-	private readonly bossSpawned: boolean = false
+	private readonly bossSpawned: boolean = false;
 
 	/**
 	 * How rapid the clock time is changing
 	 * The lower, the faster
 	 */
-	private readonly speed = 0.1;
+	private readonly speed = 0.01;
 
 	/** @ignore */
 	constructor(private readonly logger: Logger) {}
@@ -65,9 +65,8 @@ export default class EnvironmentService implements OnStart, OnInit {
 	 */
 	private async onTimerChanged(time: number): Promise<void> {
 		if (!typeIs(time, "number") || time === undefined) {
-			return
+			return;
 		}
-
 
 		const [hour, minute] = await this.deconstructTime(tostring(time));
 		const period = this.getPeriod(tonumber(hour as string) as number);
@@ -81,7 +80,7 @@ export default class EnvironmentService implements OnStart, OnInit {
 			if (item.FindFirstChildWhichIsA("Fire")) {
 				const descendant = item.FindFirstChildWhichIsA("Fire") as Fire;
 				descendant.Enabled = period === "AM" ?? false;
-			} 
+			}
 		});
 	}
 
@@ -115,7 +114,7 @@ export default class EnvironmentService implements OnStart, OnInit {
 	/**
 	 * Returns the boolean if the item type
 	 * Corresponds to the given type
-	 * 
+	 *
 	 * @param item - the item we are checking for
 	 * @param type - category of what the item belongs to
 	 * @returns boolean
@@ -163,7 +162,6 @@ export default class EnvironmentService implements OnStart, OnInit {
 	 * @returns Period - AM | PM
 	 */
 	public getPeriod(time: number): Period {
-		warn(time);
 		return time < 18.72 ? "AM" : "PM";
 	}
 }

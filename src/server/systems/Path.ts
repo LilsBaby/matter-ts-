@@ -8,6 +8,7 @@ import Simplepath from "@rbxts/simplepath";
 import { GameSystem } from "types/matter";
 import Log, { Logger } from "@rbxts/log";
 import { setTimeout } from "@rbxts/set-timeout";
+import { Trajectory } from "shared/components/weapon";
 
 const OVERRIDERS = {
 	JUMP_WHEN_STUCK: true,
@@ -29,13 +30,18 @@ async function getPath(world: World, id: AnyEntity): Promise<Simplepath> {
 		const path = new Simplepath(
 			model?.CharacterRig15 as Model,
 			{
-				AgentRadius: 1,
-				AgentHeight: 4,
+				AgentRadius: 3.5,
+				AgentHeight: 7.5,
 				AgentCanJump: true,
+				AgentCanClimb: true,
+				Costs: {
+					FireZone: math.huge,
+				},
 			},
 			OVERRIDERS,
 		);
 		path.Visualize = SETTINGS.Visualize;
+
 		if (path) resolve(path);
 
 		reject(`Failed to create path for: ${id}`);
@@ -59,7 +65,7 @@ function endPath(world: World, id: AnyEntity, janitor: Janitor) {
 	janitor.cleanup();
 	janitor.destroy();
 
-	world.remove(id, Path)
+	world.remove(id, Path);
 }
 
 /**
@@ -69,6 +75,8 @@ function endPath(world: World, id: AnyEntity, janitor: Janitor) {
  * @param state
  */
 const PathSystem: GameSystem = async (world: World, state) => {
+	const janitors = new Map<AnyEntity, Janitor>();
+
 	for (const [id, record] of world.queryChanged(Path)) {
 		if (record.old && record.new === undefined) {
 			continue;
@@ -86,10 +94,15 @@ const PathSystem: GameSystem = async (world: World, state) => {
 
 		const path = await getPath(world, id);
 		if (!path) {
-			warn('bruh')
 			continue;
 		}
-		initiatePath(path, destination);
+
+		const isProjectile = world.get(id, Trajectory);
+		if (isProjectile?.isShooting) {
+			endPath(world, id, janitor);
+		} else {
+			initiatePath(path, destination);
+		}
 
 		janitor.addConnection(
 			path.WaypointReached.Connect(() => {
@@ -116,6 +129,10 @@ const PathSystem: GameSystem = async (world: World, state) => {
 				task.spawn(() => record.new?.reached());
 			}),
 		);
+
+		record.new?.patch({
+			path,
+		});
 	}
 };
 

@@ -1,7 +1,8 @@
-import { AnyEntity, useEvent, useThrottle, World } from "@rbxts/matter";
+import { AnyEntity, useDeltaTime, useEvent, useThrottle, World } from "@rbxts/matter";
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { Goblin } from "shared/components/enemy/goblin";
 import { Path, Rig, Transform } from "shared/components/entity";
+import { Trajectory } from "shared/components/weapon";
 import PID from "shared/packages/pid";
 import Tree from "shared/packages/tree";
 import { GameEvent } from "types/enums/matter";
@@ -30,7 +31,6 @@ async function GenerateRandomPosition(): Promise<Vector3> {
 
 	const x = random.NextNumber(MIN_X, MAX_X);
 	const y = random.NextNumber(MIN_Y, MAX_Y);
-	warn(x, y);
 
 	const position = new Vector3(x, box.GetPivot().Position.Y + box.Size.div(2).Y, y);
 	return position;
@@ -47,7 +47,6 @@ const GoblinSpawnSystem: GameSystem = async (world: World) => {
 
 	if (useThrottle(random.NextInteger(45, 100))) {
 		const position = await GenerateRandomPosition();
-		warn(position);
 		const direction = new Vector3(0, -1, 0);
 
 		const cast = Workspace.Raycast(position, direction.mul(100), RayParams);
@@ -63,10 +62,12 @@ const GoblinSpawnSystem: GameSystem = async (world: World) => {
 			Goblin(),
 			Transform({ cframe: finalPos }),
 			Path({
-				destionation: (Tree.Find(Workspace, "assets/towers/base") as Model).GetPivot().Position,
+				destionation: (Tree.Find(Workspace, "assets/towers/tower-base") as Model).PrimaryPart?.GetPivot()
+					.Position as Vector3,
 				reached: () => {
-					world.despawn(id)
+					world.despawn(id);
 				},
+				path: undefined,
 			}),
 		);
 

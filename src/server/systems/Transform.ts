@@ -5,7 +5,7 @@ import { GameSystem } from "types/matter";
 
 const TransformSystem: GameSystem = (world: World) => {
 	for (const [id, record] of world.queryChanged(Transform)) {
-		if (world.contains(id) === undefined) {
+		if (!world.contains(id)) {
 			continue;
 		}
 
