@@ -28,6 +28,7 @@ function getBehaviour({ distance, acceleration, projectile }: Trajectory): FastC
 	const behavior = FastCast.newBehavior();
 	behavior.RaycastParams = CastParams;
 
+	warn(acceleration);
 	behavior.Acceleration = acceleration;
 	behavior.AutoIgnoreContainer = true;
 	behavior.CosmeticBulletTemplate = projectile;
@@ -60,21 +61,25 @@ function RayHit(cast: ActiveCast, raycastResult: RaycastResult, velocity: Vector
 		return;
 	}
 
-	const explosion = new Instance("Explosion")
-	explosion.BlastRadius = RANDOM.NextInteger(25, 30);
-	explosion.Position = (projectile as Model).GetPivot().Position
-	explosion.Parent = projectile
+	warn(hit.Name);
+
+	/**
+	 * const explosion = new Instance("Explosion");
+	explosion.BlastRadius = RANDOM.NextInteger(5, 10);
+	explosion.Position = (projectile as Model).GetPivot().Position;
+	explosion.Parent = projectile;
+	 */
 
 	const tween = TweenService.Create(hit, new TweenInfo(1, Enum.EasingStyle.Quart), {
 		Transparency: 1,
-	})
-	tween.Play()
+	});
+	tween.Play();
 
 	task.delay(0.2, () => {
-		explosion.Destroy();
+		projectile?.Destroy();
 		tween.Cancel();
-		tween.Destroy()
-	})
+		tween.Destroy();
+	});
 }
 
 function LengthChanged(
@@ -114,14 +119,15 @@ async function Fire(caster: Caster, behavior: FastCastBehavior, model: Model) {
 		const origin = model.GetPivot().Position;
 		// origin: 0, 0, 0 and looks at the base
 		const worldDir = CFrame.lookAt(
-			Vector3.zero,
-			((Tree.Find(Workspace, "assets/towers/tower-base") as Model).PrimaryPart as BasePart)
+			new Vector3(),
+			((Tree.Find(Workspace, "assets/towers/tower-base") as Model).FindFirstChild("Foundation") as BasePart)
 				.GetPivot()
 				.Position.sub(origin).Unit,
 		);
-		const spread = CFrame.fromOrientation(0, 0, RANDOM.NextInteger(0, math.pi * 2));
-		const final = worldDir.mul(spread).mul(CFrame.fromOrientation(math.rad(RANDOM.NextInteger(-8, 8)) * 0.5, 0, 0));
-		caster.Fire(origin, final.LookVector, 250, behavior);
+		const direction = CFrame.fromOrientation(0, 0, math.random(0, math.pi * 2));
+		const angle = CFrame.fromOrientation(math.rad(math.random(-8, 8)) * (1 - 0.5), 0, 0);
+		const final = worldDir.mul(direction).mul(angle).LookVector;
+		caster.Fire(origin, final, 250, behavior);
 	} catch (err) {
 		Log.Error(`Error during projectile: ${err}`);
 	}
@@ -145,7 +151,11 @@ const TrajectorySystem: GameSystem = async (world: World) => {
 		});
 
 		janitor.addConnection(caster.LengthChanged.Connect(LengthChanged));
-		janitor.addConnection(caster.RayHit.Connect(RayHit));
+		janitor.addConnection(
+			caster.RayHit.Connect((asda, re) => {
+				warn(re);
+			}),
+		);
 	}
 
 	for (const [id, _] of world.query(Rig, Transform).without(Trajectory)) {
@@ -158,7 +168,7 @@ const TrajectorySystem: GameSystem = async (world: World) => {
 			Trajectory({
 				duration: 3,
 				projectile,
-				acceleration: Vector3.yAxis.mul(-Workspace.Gravity / 6),
+				acceleration: Vector3.yAxis.mul(-Workspace.Gravity / 2),
 				distance: 200,
 				isShooting: false,
 				speed: 250,
