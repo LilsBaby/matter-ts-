@@ -108,7 +108,7 @@ async function Fire(caster: Caster, behavior: FastCastBehavior, model: Model) {
 				.Position.sub(origin).Unit,
 		);
 		const spread = CFrame.fromOrientation(0, 0, RANDOM.NextInteger(0, math.pi * 2));
-		const final = worldDir.mul(spread).mul(CFrame.fromOrientation(math.rad(RANDOM.NextInteger(-8, 8)), 0, 0));
+		const final = worldDir.mul(spread).mul(CFrame.fromOrientation(math.rad(RANDOM.NextInteger(-8, 8)) * 0.5, 0, 0));
 		caster.Fire(origin, final.LookVector, 250, behavior);
 	} catch (err) {
 		Log.Error(`Error during projectile: ${err}`);
@@ -146,7 +146,7 @@ const TrajectorySystem: GameSystem = async (world: World) => {
 			Trajectory({
 				duration: 3,
 				projectile,
-				acceleration: Vector3.yAxis.mul(Workspace.Gravity / 2),
+				acceleration: Vector3.yAxis.mul(-Workspace.Gravity / 6),
 				distance: 200,
 				isShooting: false,
 				speed: 250,

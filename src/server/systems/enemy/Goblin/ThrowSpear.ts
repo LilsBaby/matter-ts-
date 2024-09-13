@@ -12,7 +12,6 @@ function canSeeTower() {}
 const random = new Random();
 const GoblinThrowSystem: GameSystem = (world: World, state) => {
 	if (useThrottle(random.NextInteger(3, 6))) {
-		warn('print between 10 an 15 seoconds')
 		for (const [id, goblin, model, transform, trajectory] of world.query(Goblin, Rig, Transform, Trajectory)) {
 			const modifier = trajectory.patch({
 				duration: trajectory.duration - useDeltaTime(),

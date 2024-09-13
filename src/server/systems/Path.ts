@@ -31,7 +31,7 @@ async function getPath(world: World, id: AnyEntity): Promise<Simplepath> {
 			model?.CharacterRig15 as Model,
 			{
 				AgentRadius: 3.5,
-				AgentHeight: 7.5,
+				AgentHeight: 5,
 				AgentCanJump: true,
 				AgentCanClimb: true,
 				Costs: {
