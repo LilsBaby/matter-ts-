@@ -17,18 +17,17 @@ const GoblinThrowSystem: GameSystem = (world: World, state) => {
 				duration: trajectory.duration - useDeltaTime(),
 				isShooting: true,
 			});
-			warn(modifier.duration)
-	
+			warn(modifier.duration);
+
 			if (modifier.duration <= 0) {
-				warn('stopped')
+				warn("stopped");
 				world.remove(id, Trajectory);
 			} else {
-				warn("shooting")
+				warn("shooting");
 				world.insert(id, modifier);
 			}
 		}
 	}
-	
 };
 
 export = {

@@ -60,9 +60,21 @@ function RayHit(cast: ActiveCast, raycastResult: RaycastResult, velocity: Vector
 		return;
 	}
 
-	TweenService.Create(hit, new TweenInfo(1, Enum.EasingStyle.Quart), {
+	const explosion = new Instance("Explosion")
+	explosion.BlastRadius = RANDOM.NextInteger(25, 30);
+	explosion.Position = (projectile as Model).GetPivot().Position
+	explosion.Parent = projectile
+
+	const tween = TweenService.Create(hit, new TweenInfo(1, Enum.EasingStyle.Quart), {
 		Transparency: 1,
-	}).Play();
+	})
+	tween.Play()
+
+	task.delay(0.2, () => {
+		explosion.Destroy();
+		tween.Cancel();
+		tween.Destroy()
+	})
 }
 
 function LengthChanged(
