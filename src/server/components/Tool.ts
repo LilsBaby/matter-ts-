@@ -4,7 +4,7 @@ import { Dependency, Modding, OnInit, OnStart } from "@flamework/core";
 import { Players } from "@rbxts/services";
 import Log, { Logger } from "@rbxts/log";
 import { Signal } from "@rbxts/lemon-signal";
-import Object = require("@rbxts/object-utils")
+import Object = require("@rbxts/object-utils");
 import First = Enum.RenderPriority.First;
 
 export interface ToolDestroyed {
@@ -34,12 +34,12 @@ enum InputEnum {
 }
 
 export type InputKey = keyof typeof InputEnum;
-export type ActionInfo = { Action: keyof typeof ToolState; State: keyof typeof ToolState };
+export type ActionInfo = { Action: keyof typeof ToolState };
 type ToolInput = {
 	InputKey: ActionInfo;
 };
 
-type ValidatorAction<T extends Record<string, ActionInfo>[]> = T extends Record<infer InputKey, infer ActionInfo>[] ? R : [];
+type ValidatorAction<T extends Record<string, ActionInfo>[]> = T extends Record<infer First, infer Rest>[] ? T : never;
 
 export default abstract class Tool<I extends ToolAttributes = ToolAttributes, K extends ToolInstance = ToolInstance>
 	extends BaseComponent<I, K>
@@ -83,11 +83,12 @@ export default abstract class Tool<I extends ToolAttributes = ToolAttributes, K 
 	 */
 	public toolRemoved = 0;
 
-	protected components: Components;
-
-	constructor(private readonly logger: Logger, private readonly actions: Map<string, ActionInfo>[]) {
+	constructor(
+		private readonly logger: Logger,
+		private readonly actions: Map<string, ActionInfo>[],
+		protected readonly components: Components = Dependency<Components>(),
+	) {
 		super();
-		this.components = Dependency<Components>();
 	}
 
 	/** @ignore */
