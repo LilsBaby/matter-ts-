@@ -25,7 +25,14 @@
 		"tree-chopping:out/server/services/developer/init@DevProducts": "server/services/developer/init@DevProducts",
 		"tree-chopping:out/server/services/player/Save@PlayerSavingService": "server/services/player/Save@PlayerSavingService",
 		"tree-chopping:out/server/services/player/init@PlayerService": "server/services/player/init@PlayerService",
-		"tree-chopping:out/server/services/environment@onTimerChanged": "server/services/environment@onTimerChanged"
+		"tree-chopping:out/server/services/environment@onTimerChanged": "server/services/environment@onTimerChanged",
+		"tree-chopping:out/server/components/Weapon@Weapon": "server/components/Weapon@Weapon",
+		"tree-chopping:out/server/components/Bow@Bow": "server/components/Bow@Bow",
+		"tree-chopping:out/server/components/Weapon@Tool": "server/components/Weapon@Tool",
+		"tree-chopping:out/server/components/Weapon@ToolDestroyed": "server/components/Weapon@ToolDestroyed",
+		"tree-chopping:out/server/components/Tool@Tool": "server/components/Tool@Tool",
+		"tree-chopping:out/server/components/Tool@ToolDestroyed": "server/components/Tool@ToolDestroyed",
+		"tree-chopping:out/server/components/Tool@ToolCreated": "server/components/Tool@ToolCreated"
 	},
 	"metadata": {}
 }
