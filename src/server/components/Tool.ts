@@ -54,6 +54,10 @@ export default abstract class Tool<I extends ToolAttributes = ToolAttributes, K 
 	 */
 	protected activeInputs = new Map<InputKey, ToolInput>();
 	/**
+	 *
+	 */
+	protected components: Components = Dependency<Components>()
+	/**
 	 * Fires whenever tool is destroyed
 	 * @private
 	 */
@@ -85,8 +89,6 @@ export default abstract class Tool<I extends ToolAttributes = ToolAttributes, K 
 
 	constructor(
 		private readonly logger: Logger,
-		private readonly actions: Map<string, ActionInfo>[],
-		protected readonly components: Components = Dependency<Components>(),
 	) {
 		super();
 	}
